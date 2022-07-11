@@ -1,0 +1,175 @@
+<template>
+    <image-modal :modalStatus="modalStatus" :modalAnimate="modalAnimate" :modalProject="modalProject" :modalPage="modalPage" @hideModal="hideModal" />
+    <div id="mainContainer" :class="{ hideYScroll }">
+        <div id="splashPage" :class="{ hideSplash, pushUpSplash, pushDownSplash }">
+            <main-canvas />
+
+            <Transition>
+                <div v-show="showSplashText" id="splashContent">
+                    <splash-text />
+                    <splash-links @change-page="transitionPage" />
+                </div>
+            </Transition>
+        </div>
+
+        <nav-links :currentPage="currentPage" :activeStatus="activeStatus" @show-splash="showSplash" @show-page="showPage" />
+        <pages-slider :scrollTo="scrollToPage" @showModal="showModal" />
+    </div>
+</template>
+
+<script>
+    import mainCanvas  from './canvas.vue';
+    import navLinks    from '../NavLinks.vue';
+    import splashText  from './splashText.vue';
+    import splashLinks from './splashLinks.vue';
+    import pagesSlider from '../PagesSlider.vue';
+
+    export default {
+        name: 'splashPage',
+        components: {
+            mainCanvas,
+            navLinks,
+            splashText,
+            splashLinks,
+            pagesSlider,
+        },
+        data() {
+            return {
+                currentPage:    this.page,
+                scrollToPage:   this.page,
+                changedPage:    false,
+                pushDownSplash: false,
+                pushUpSplash:   false,
+                modalStatus:    false,
+                modalAnimate:   false,
+                modalProject:   null,
+                modalPage:      null,
+
+                showSplashText: false,
+            }
+        },
+        mounted () {
+            document.fonts.ready.then(() => {
+                this.showSplashText = true;
+            });
+        },
+        computed: {
+            hideYScroll:  function() { return (this.currentPage === 'home') ? true : false },
+            hideSplash:   function() { return (this.page !== 'home') ? true : false },
+            activeStatus: function() {
+                if(this.page === 'home' && this.changedPage === false) //directly to home page
+                    return 'inactiveNoAnimation';
+                if(this.page !== 'home' && this.changedPage === false) //directly to non-home page
+                    return 'activeNoAnimation';
+                if(this.currentPage === 'home')
+                    return 'inactive'; //BUG <-make visibility:hidden or display:none after transition
+                else
+                    return 'active';            
+            },
+        },
+        props: { page: String },
+        methods: {
+            showModal(fileParams) {
+                this.modalProject = fileParams.formattedTitle;
+                this.modalPage = fileParams.pageNumber;
+                this.modalStatus = true;
+                this.modalAnimate = true;
+            },
+            hideModal() { 
+                this.modalStatus = false;
+                this.modalAnimate = false;
+            },
+            transitionPage(toPage) {
+                this.pushDownSplash = false;
+                this.pushUpSplash = true;
+                
+                setTimeout(() => {
+                    this.changedPage = true;
+                    this.currentPage = toPage;
+                    this.scrollToPage = toPage + 'FromBlank';
+                }, 700);
+            },
+            showSplash() {
+                if(this.currentPage === 'resume' || this.page === 'resume')
+                    this.scrollToPage = 'blankFromResume';
+                if(this.currentPage === 'projects' || this.page === ' projects')
+                    this.scrollToPage = 'blankFromProjects';
+
+                setTimeout(() => {
+                    this.currentPage    = 'home';
+                    this.pushUpSplash   = false;
+                    this.pushDownSplash = true;
+                    this.changedPage    = true;
+                }, 700);
+            },
+            showPage(page) {
+                if(this.currentPage === page)
+                    return;
+
+                if(page === 'resume' && this.page !== 'resume' || 
+                  (page === 'resume' && this.page === 'resume' && this.changedPage)) { 
+                    this.scrollToPage = 'resumeFromProjects';
+                    this.currentPage = 'resume';
+                    this.changedPage = true;
+                }
+                if(page === 'projects' && this.page !== 'projects' ||
+                  (page === 'projects' && this.page === 'projects' && this.changedPage)) { 
+                    this.scrollToPage = 'projectsFromResume';
+                    this.currentPage = 'projects'
+                    this.changedPage = true;
+                }
+            }
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+    #mainContainer {
+        position: fixed;
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
+
+        &.hideYScroll { overflow-y: hidden }
+    }
+    #splashPage { position: relative }
+    #splashContent {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+    }
+    .hideSplash { transform: translateY(-100vh) }
+    .pushUpSplash { 
+        animation: slideUp .4s ease-in;
+        animation-fill-mode: forwards;
+    }
+    .pushDownSplash {
+        animation: slideDown .4s ease-in;
+        animation-fill-mode: forwards;
+    }
+
+    .v-enter-active, .v-leave-active { transition: opacity 0.5s ease }
+    .v-enter-from, .v-leave-to { opacity: 0 }
+    
+    @keyframes slideUp {
+        0% { transform: translateY(0vh) }
+        100% { transform: translateY(-100vh) }
+    }
+    @keyframes slideDown {
+        0% { transform: translateY(-100vh) }
+        100% { transform: translateY(0vh) }
+    }
+
+    @media only screen and (max-width: 900px) {
+   
+    }
+    @media only screen and (max-width: 600px) {
+ 
+    }
+    @media only screen and (max-width: 350px) {
+
+    }
+</style>
