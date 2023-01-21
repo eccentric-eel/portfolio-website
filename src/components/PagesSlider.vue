@@ -1,18 +1,18 @@
 <template>
     <div id="container" :class="scrollTo">
-        <resume-page />
+        <summary-page />
         <projects-page />
     </div>
 </template>
 
 <script>
-    import resumePage   from './resumePage/resumePage.vue';
+    import summaryPage  from './summaryPage/summaryPage.vue';
     import projectsPage from './projectsPage/projectsPage.vue';
 
     export default {
         name: 'pagesSlider',
         components: {
-            resumePage,
+            summaryPage,
             projectsPage,
         },
         props: { scrollTo: String },
@@ -25,8 +25,8 @@
         width: 200vw;
         transform: translateX(100vw);
         
-        &.blankFromResume {
-            animation: toBlankFromResume .5s ease-in;
+        &.blankFromSummary {
+            animation: toBlankFromSummary .5s ease-in;
             animation-fill-mode: forwards;
         }
         &.blankFromProjects {
@@ -34,8 +34,8 @@
             animation-fill-mode: forwards;
         }
 
-        &.resumeFromBlank {
-            animation: toResumeFromBlank .5s ease-in;
+        &.summaryFromBlank {
+            animation: toSummaryFromBlank .5s ease-in;
             animation-fill-mode: forwards;
         }
         &.projectsFromBlank {
@@ -43,20 +43,20 @@
             animation-fill-mode: forwards;
         }
 
-        &.resumeFromProjects {
-            animation: toResumeFromProjects .5s ease-in;
+        &.summaryFromProjects {
+            animation: toSummaryFromProjects .5s ease-in;
             animation-fill-mode: forwards;
         }
-        &.projectsFromResume {
-            animation: toProjectsFromResume .5s ease-in;
+        &.projectsFromSummary {
+            animation: toProjectsFromSummary .5s ease-in;
             animation-fill-mode: forwards;
         }
 
-        &.resume { transform: translateX(0vw) }
+        &.summary { transform: translateX(0vw) }
         &.projects { transform: translateX(-100vw) }
     }
 
-    @keyframes toBlankFromResume {
+    @keyframes toBlankFromSummary {
         0% { transform: translateX(0vw) }
         100% { transform: translateX(100vw) }
     }
@@ -65,7 +65,7 @@
         100% { transform: translateX(100vw) }
     }
 
-    @keyframes toResumeFromBlank {
+    @keyframes toSummaryFromBlank {
         0% { transform: translateX(100vw) }
         100% { transform: translateX(0vw) }
     }
@@ -74,11 +74,11 @@
         100% { transform: translateX(-100vw) }
     }
 
-    @keyframes toResumeFromProjects {
+    @keyframes toSummaryFromProjects {
         0%   { transform: translateX(-100vw) }
         100% { transform: translateX(0vw) }
     }
-    @keyframes toProjectsFromResume {
+    @keyframes toProjectsFromSummary {
         0%   { transform: translateX(0vw) }
         100% { transform: translateX(-100vw) }
     }

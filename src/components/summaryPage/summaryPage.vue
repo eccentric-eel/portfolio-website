@@ -7,7 +7,17 @@
             <h4>Full Stack Web Developer <span>&bull;</span> Software Developer</h4>
 
             <span id="profileImg__inline" style="float: right; margin: 0 0 .4rem 1rem;">
-                <div class="lds-grid"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="lds-grid">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
                 <img v-show="showProfileImg" src="../../assets/profile.jpg" @load="profileImgLoaded" alt="Profile Image" id="profileImg__inline" height="500">
             </span>
 
@@ -24,7 +34,9 @@
             </p>
 
             <div id="profileLinks">
-                <span class="linkedin">linkedin.com/in/brandon-sterling</span>
+                <a href="https://linkedin.com/in/brandon-sterling" class="linkedin" target="_blank" rel="noreferrer">
+                    linkedin.com/in/brandon-sterling
+                </a>
                 <span class="email">bsterli92@gmail.com</span>
             </div>
         </div>
@@ -35,7 +47,7 @@
         </span>
     </section>
 
-    <section class="resumeSection">
+    <section class="summarySection">
         <h2>Professional Experience</h2> 
         <div class="subSectionContainer">
             <div class="inner">
@@ -49,7 +61,7 @@
             </p>
         </div>
     </section>
-    <section class="resumeSection"> 
+    <section class="summarySection"> 
         <h2>Education</h2>
         <div class="subSectionContainer">
             <div class="inner">
@@ -63,23 +75,16 @@
             </p>
         </div>
     </section>
-    <section class="resumeSection"> <h2>Skills and Expertise</h2>
+    <section class="summarySection"> <h2>Skills and Expertise</h2>
         <div class="subSectionContainer skillGrid">
-            <span>PHP + Laravel</span>
-            <span>Javascript + Vue</span>
-            <span>Axios</span>
-            <span>Vuetify</span>
-            <span>Bootstrap</span>
-            <span>CSS + Sass</span>
-            <span>SQL</span>
+            <span>Laravel</span>
+            <span>Vue</span>
             <span>AWS</span>
-            <span>C++</span>
-            <span>Git</span>
             <span>Postman</span>
-            <span>Jira</span>
+            <span>Atlassian</span>
         </div>
     </section>
-    <section class="resumeSection">
+    <section class="summarySection">
         <h2>Certifications</h2>
         <div class="certContainer">
             <div></div>
@@ -93,16 +98,14 @@
 
 <script>
     export default {
-        name: 'resumePage',
+        name: 'summaryPage',
         data() {
             return {
                 showProfileImg: false,
             }
         },
         methods: {
-            profileImgLoaded() {
-                this.showProfileImg = true;
-            }
+            profileImgLoaded() { this.showProfileImg = true }
         },
     }
 </script>
@@ -157,15 +160,28 @@
         margin-top: 1.3rem;
         text-align: left;
 
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
         .linkedin, .email {
             flex: 1;
             padding: 1rem 2rem 1rem 3rem;
             border-radius: 5px;
+            border: 2px solid transparent;
+
+            transition: .3s all;
+
+            &:hover {
+                border: 2px solid #ff00ff;
+                cursor: pointer;
+            }
         }
         .linkedin { background: #333 url(../../assets/linkedin.svg) no-repeat center left 1rem / auto 1.4rem }
         .email    { background: #333 url(../../assets/mail.svg) no-repeat center left 1rem / auto 1.3rem     }
     }
-    .resumeSection {
+    .summarySection {
         margin: 3rem 0;
         color: #fff;
     }
@@ -225,8 +241,17 @@
     }
     .skillGrid {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        grid-template-rows: 2.5rem 2.5rem;  
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 2rem;
+        column-gap: 5px;
+        row-gap: 5px;
+
+        span {
+            text-align: center;
+            line-height: 2rem;
+            border: 1px solid #666;
+            cursor: pointer;
+        }
     }
 
 .lds-grid {
@@ -325,7 +350,7 @@
             width: calc(100vw - 2rem);
         }
 
-        .resumeSection { margin: 3rem 0 }
+        .summarySection { margin: 3rem 0 }
         .subSectionContainer { margin: 1rem }
         .certContainer {
             margin: 1rem;
@@ -339,8 +364,8 @@
             h1 { font-size: 2.3rem }
         }
         .skillGrid {
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: 3rem 3rem 3rem 3rem;  
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: 2rem
         }
     }
     @media only screen and (max-width: 350px) {

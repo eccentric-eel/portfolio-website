@@ -5,7 +5,7 @@
                    'inactive': isInactive }">
 
         <button :class="{ 'current': isActiveProjectsPage }" @click="$emit('show-page', 'projects')">Projects</button>
-        <button :class="{ 'current': isActiveResumePage   }" @click="$emit('show-page', 'resume')">Resume</button>
+        <button :class="{ 'current': isActiveSummaryPage   }" @click="$emit('show-page', 'summary')">Summary</button>
         <button @click="$emit('show-splash')"></button>
     </nav>
 </template>
@@ -27,7 +27,7 @@
             isInactiveNoAnimation: function() { return (this.activeStatus === 'inactiveNoAnimation') ? true : false },
 
             isActiveProjectsPage:  function() { return (this.currentPage === 'projects') ? true : false },
-            isActiveResumePage:    function() { return (this.currentPage === 'resume')   ? true : false },
+            isActiveSummaryPage:    function() { return (this.currentPage === 'summary')   ? true : false },
         },
         watch: {
             activeStatus(val) {

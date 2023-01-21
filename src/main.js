@@ -22,9 +22,9 @@ const router = createRouter({
             props: { page: "projects" }
         },
         { 
-            path: '/resume',
+            path: '/summary',
             component: splashPage,
-            props: { page: "resume" }
+            props: { page: "summary" }
         },
         // { path: '/:notFound(.*)', redirect: '/' }
     ]

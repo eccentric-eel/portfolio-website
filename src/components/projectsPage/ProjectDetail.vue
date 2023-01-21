@@ -2,8 +2,8 @@
     <section>
         <div class="txtContainer">
             <div class="titleLink">
-                <h1>{{ projectTitle }}</h1>
-                <a :href="projectLink">{{ projectDomain }}</a>
+                <h1 v-if="projectTitle">{{ projectTitle }}</h1>
+                <a v-if="projectLink" :href="projectLink">{{ projectDomain }}</a>
             </div>
             <p>{{ projectDesc }}</p>
             <div>
@@ -15,11 +15,16 @@
         </div>
 
         <div class="imgContainer">
-            <picture v-for="(image, index) in projectImages" :key="image" @click="$parent.$parent.$emit('showModal', { formattedTitle: formattedTitle, pageNumber: index })">
-                <source media="(min-width: 900px)" :srcset="require(`@/assets/site-captures/thumbnail-${image}`)">
-                <source media="(max-width: 900px)" :srcset="require(`@/assets/site-captures/thumbnail-mobile-${image}`)">
-                <img :src="require(`@/assets/site-captures/${image}`)" alt="Project Image">
-            </picture>
+            <div>            
+                <button :class="{'active': !previewAsMobile}" @click="previewAsMobile = false">Desktop</button>
+                <button v-if="!disableMobile" :class="{'active': previewAsMobile}" @click="previewAsMobile = true" :disabled="disableMobile">Mobile</button>
+            </div>
+
+            <img v-for="(image, index) in projectImages"
+            alt="Project Image"
+            :key="image"
+            :src="(previewAsMobile) ? require(`@/assets/site-captures/thumbnail-mobile-${image}`) : require(`@/assets/site-captures/thumbnail-${image}`)"
+            @click="$parent.$parent.$emit('showModal', { formattedTitle: formattedTitle, pageNumber: index, showMobile: previewAsMobile })">
         </div>
     </section>
 </template>
@@ -27,14 +32,19 @@
 <script>
     export default {
         name: 'ProjectDetail',
+        data() {
+            return {
+                previewAsMobile: false
+            }
+        },
         computed: {
             formattedTitle: function() {
                 if(this.projectTitle === 'Fleet Attack')
                     return 'fleet-attack';
                 if(this.projectTitle === 'QRiFile')
                     return 'qrifile';
-                else
-                    return null;
+                if(this.projectTitle === 'Guest Sign-in App')
+                    return 'guest-app';
             }
         },
         props: {
@@ -42,10 +52,6 @@
                 type: String, 
                 required: true,
                 default: "Project Title"
-            },
-            projectImages: {
-                type: Array,
-                required: true,
             },
             projectDesc: {
                 type: String,
@@ -56,13 +62,14 @@
                 type: Array,
                 required: true
             },
-            projectLink: {
-                type: String,
-                required: true
-            },
-            projectDomain: {
-                type: String,
-                required: true
+            projectImages: { type: Array },
+            projectLink:   { type: String },
+            projectDomain: { type: String }, 
+
+            //disable mobile previews (for desktop-only apps)
+            disableMobile: { 
+                type: Boolean,
+                default: false
             }
         },
     }
@@ -103,10 +110,10 @@
                         color: #666;
                     }
 
-                    &.vue     { background: url(../../assets/vue.svg) no-repeat center / 2.5rem }
-                    &.php     { background: url(../../assets/php.svg) no-repeat center / 3.5rem }
-                    &.python  { background: url(../../assets/python.svg) no-repeat center / 2.5rem }
-                    &.stripe  { background: url(../../assets/stripe.svg) no-repeat center / 4rem }
+                    &.vue     { background: url(../../assets/vue.svg)     no-repeat center / 2.5rem }
+                    &.php     { background: url(../../assets/php.svg)     no-repeat center / 3.5rem }
+                    &.python  { background: url(../../assets/python.svg)  no-repeat center / 2.5rem }
+                    &.stripe  { background: url(../../assets/stripe.svg)  no-repeat center / 4rem   }
                     &.laravel { background: url(../../assets/laravel.svg) no-repeat center / 2.1rem }
                 }
             }
@@ -118,17 +125,43 @@
             justify-content: center;
 
             img { 
-                height: auto;
+                height: 5rem;
                 width: 10rem;
                 margin: .5rem 0;
+                object-fit: contain;
                 box-shadow: 0 0 5px #333;
                 border: 1px solid #fff;
+                background: #333;
                 cursor: pointer;
                 transition: all .4s; 
 
                 &:hover { 
                     z-index: 3;
-                    transform: scale(2);
+                    transform: scale(1.6);
+                }
+            }
+
+            div {
+                display: flex;
+                gap: 5px;
+
+                button {
+                    flex: 1;
+                    padding: 5px;
+                    background: #333;
+                    color: #999;
+                    border: solid 1px #999;
+                    box-shadow: 0 0 5px #333;
+                    cursor: pointer;
+
+                    transition: all .4s; 
+                
+                    &.active {
+                        color: #ff00ff;
+                        border: solid 1px #ff00ff;
+                        text-shadow: 2px 2px 4px #1a1a1a;
+                        font-weight: bold;
+                    }
                 }
             }
         }

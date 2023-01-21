@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="$emit('changePage', 'resume')">Resume</button>
+        <button @click="$emit('changePage', 'summary')">Summary</button>
         <button @click="$emit('changePage', 'projects')">Projects</button>
     </div>
 </template>
