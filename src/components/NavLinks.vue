@@ -1,11 +1,11 @@
 <template>
     <nav v-show="!hideNav" :class="{ 'activeNoAnimation':   isActiveNoAnimation,
-                   'inactiveNoAnimation': isInactiveNoAnimation,
-                   'active':   isActive,
-                   'inactive': isInactive }">
+                                     'inactiveNoAnimation': isInactiveNoAnimation,
+                                     'active':              isActive,
+                                     'inactive':            isInactive }">
 
         <button :class="{ 'current': isActiveProjectsPage }" @click="$emit('show-page', 'projects')">Projects</button>
-        <button :class="{ 'current': isActiveSummaryPage   }" @click="$emit('show-page', 'summary')">Summary</button>
+        <button :class="{ 'current': isActiveSummaryPage  }" @click="$emit('show-page', 'summary')">Summary</button>
         <button @click="$emit('show-splash')"></button>
     </nav>
 </template>

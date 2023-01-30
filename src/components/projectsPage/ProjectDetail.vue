@@ -15,7 +15,7 @@
         </div>
 
         <div class="imgContainer">
-            <div>            
+            <div class="screenBtns">            
                 <button :class="{'active': !previewAsMobile}" @click="previewAsMobile = false">Desktop</button>
                 <button v-if="!disableMobile" :class="{'active': previewAsMobile}" @click="previewAsMobile = true" :disabled="disableMobile">Mobile</button>
             </div>
@@ -34,7 +34,7 @@
         name: 'ProjectDetail',
         data() {
             return {
-                previewAsMobile: false
+                previewAsMobile: false,
             }
         },
         computed: {
@@ -76,9 +76,17 @@
 </script>
 
 <style lang="scss" scoped>
+ 
+    h1, h5 { color: #1a1a1a }
+    h5 { font-size: .8rem }
+    h1 {   
+        font-size: 2rem;
+        text-transform: uppercase;
+    }
+
     section {
         display: flex;
-        margin: 2rem 0;
+        margin-top: 4rem;
 
         .txtContainer {
             padding: 1.5rem;
@@ -92,8 +100,7 @@
                 color: #666;
             }
             div {
-                h5 { font-size: .8rem };
-
+    
                 .techLogo {
                     display: inline-block;
                     position: relative;
@@ -175,10 +182,6 @@
                 color: #7021de;
                 font-size: 1.1rem;
             }
-            h1 { 
-                font-size: 2rem;
-                text-transform: uppercase;
-            }
         }
     }
 
@@ -199,8 +202,9 @@
 
                 img { 
                     margin: 0 .5rem;
-                    width: 3rem;
+                    width: 20%;
                 }
+                div:first-child { display: none }
             }
         }
     }

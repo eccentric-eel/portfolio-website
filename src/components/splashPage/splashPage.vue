@@ -50,8 +50,7 @@
                 modalStatus:    false,
                 modalAnimate:   false,
                 modalProject:   'qrifile',
-                modalPage:      2,
-                           
+                modalPage:      2,              
             }
         },
         mounted () {
@@ -66,7 +65,7 @@
                 if(this.page !== 'home' && this.changedPage === false) //directly to non-home page
                     return 'activeNoAnimation';
                 if(this.currentPage === 'home')
-                    return 'inactive'; //BUG <-make visibility:hidden or display:none after transition
+                    return 'inactive';
                 else
                     return 'active';            
             },
@@ -85,6 +84,8 @@
                 this.modalAnimate = false;
             },
             transitionPage(toPage) {
+                history.pushState({}, null, 'http://localhost:8080/' + toPage); //CHANGE THIS!
+
                 this.pushDownSplash = false;
                 this.pushUpSplash   = true;
                 
@@ -95,6 +96,8 @@
                 }, 700);
             },
             showSplash() {
+                history.pushState({}, null, 'http://localhost:8080/');
+
                 if(this.currentPage === 'summary' || this.page === 'summary')
                     this.scrollToPage = 'blankFromSummary';
                 if(this.currentPage === 'projects' || this.page === ' projects')
@@ -108,6 +111,8 @@
                 }, 700);
             },
             showPage(page) {
+                history.pushState({}, null, 'http://localhost:8080/' + page);
+
                 if(this.currentPage === page)
                     return;
 
@@ -146,7 +151,7 @@
         height: 100vh;
         width: 100%;
     }
-    .hideSplash { transform: translateY(-100vh) }
+    .hideSplash { transform: translateY(calc(-100vh - 1px)) }
     .pushUpSplash { 
         animation: slideUp .4s ease-in;
         animation-fill-mode: forwards;
@@ -161,10 +166,10 @@
     
     @keyframes slideUp {
         0% { transform: translateY(0vh) }
-        100% { transform: translateY(-100vh) }
+        100% { transform: translateY(calc(-100vh - 1px)) }
     }
     @keyframes slideDown {
-        0% { transform: translateY(-100vh) }
+        0% { transform: translateY(calc(-100vh - 1px)) }
         100% { transform: translateY(0vh) }
     }
 

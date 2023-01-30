@@ -60,6 +60,7 @@
         top: 50%;
         left: 50%;
         height: auto;
+        min-height: 50vh;
         width: 90vw;
         background: #333;
         border: 1px solid #999;
@@ -68,10 +69,10 @@
 
     #slider img {
         display: block;
-        margin: 1.5rem auto;
+        margin: 3rem auto;
         height: auto;
         width: auto;
-        max-height: calc(90vh - 3rem);
+        max-height: calc(90vh - 8rem);
         max-width: calc(90vw - 3rem);
         border: 1px solid #262626;
         box-shadow: 5px 5px 10px #1a1a1a;
@@ -79,8 +80,8 @@
     }
     #popupClose {
         position: absolute;
-        top: .2rem;
-        right: .2rem;
+        top: .5rem;
+        right: .5rem;
         height: 2rem;
         width: 2rem;
         border: none;
