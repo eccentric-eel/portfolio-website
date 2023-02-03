@@ -1,8 +1,10 @@
 <template>
     <image-modal v-if="modalStatus"
+        v-model="showMobile"
         :modalAnimate="modalAnimate"
         :modalProject="modalProject"
         :modalPage="modalPage"
+        :disableMobile="disableMobile"
         :showMobile="showMobile"
         @hideModal="hideModal" />
         
@@ -43,6 +45,7 @@
                 currentPage:    this.page,
                 scrollToPage:   this.page,
                 showSplashText: false,
+                disableMobile:  false,
                 showMobile:     false,
                 changedPage:    false,
                 pushDownSplash: false,
@@ -73,11 +76,12 @@
         props: { page: String },
         methods: {
             showModal(fileParams) {
-                this.modalProject = fileParams.formattedTitle;
-                this.modalPage    = fileParams.pageNumber;
-                this.showMobile   = fileParams.showMobile;
-                this.modalStatus  = true;
-                this.modalAnimate = true;
+                this.modalProject  = fileParams.formattedTitle;
+                this.modalPage     = fileParams.pageNumber;
+                this.disableMobile = fileParams.disableMobile;
+                this.showMobile    = fileParams.showMobile;
+                this.modalStatus   = true;
+                this.modalAnimate  = true;
             },
             hideModal() { 
                 this.modalStatus  = false;

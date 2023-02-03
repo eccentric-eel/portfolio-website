@@ -2,8 +2,12 @@
     <section>
         <div class="txtContainer">
             <div class="titleLink">
-                <h1 v-if="projectTitle">{{ projectTitle }}</h1>
-                <a v-if="projectLink" :href="projectLink">{{ projectDomain }}</a>
+                <h1 v-show="projectTitle">{{ projectTitle }}</h1>
+
+                <div>
+                    <span class="webLink" :class="{'active': projectLink}" @click="(projectLink) ? goToLink(projectLink) : null"></span>
+                    <span class="gitLink" :class="{'active': projectGit}"  @click="(projectGit)  ? goToLink(projectGit)  : null"></span>
+                </div>
             </div>
             <p>{{ projectDesc }}</p>
             <div>
@@ -24,7 +28,7 @@
             alt="Project Image"
             :key="image"
             :src="(previewAsMobile) ? require(`@/assets/site-captures/thumbnail-mobile-${image}`) : require(`@/assets/site-captures/thumbnail-${image}`)"
-            @click="$parent.$parent.$emit('showModal', { formattedTitle: formattedTitle, pageNumber: index, showMobile: previewAsMobile })">
+            @click="$parent.$parent.$emit('showModal', { formattedTitle: formattedTitle, pageNumber: index, disableMobile: disableMobile, showMobile: previewAsMobile })">
         </div>
     </section>
 </template>
@@ -35,6 +39,11 @@
         data() {
             return {
                 previewAsMobile: false,
+            }
+        },
+        methods: {
+            goToLink(url) {
+                if(confirm('Open external link in a new tab?')) { window.open(url,'_newtab') }
             }
         },
         computed: {
@@ -62,9 +71,9 @@
                 type: Array,
                 required: true
             },
-            projectImages: { type: Array },
+            projectImages: { type: Array  },
             projectLink:   { type: String },
-            projectDomain: { type: String }, 
+            projectGit:    { type: String },
 
             //disable mobile previews (for desktop-only apps)
             disableMobile: { 
@@ -76,7 +85,6 @@
 </script>
 
 <style lang="scss" scoped>
- 
     h1, h5 { color: #1a1a1a }
     h5 { font-size: .8rem }
     h1 {   
@@ -147,40 +155,37 @@
                     transform: scale(1.6);
                 }
             }
-
-            div {
-                display: flex;
-                gap: 5px;
-
-                button {
-                    flex: 1;
-                    padding: 5px;
-                    background: #333;
-                    color: #999;
-                    border: solid 1px #999;
-                    box-shadow: 0 0 5px #333;
-                    cursor: pointer;
-
-                    transition: all .4s; 
-                
-                    &.active {
-                        color: #ff00ff;
-                        border: solid 1px #ff00ff;
-                        text-shadow: 2px 2px 4px #1a1a1a;
-                        font-weight: bold;
-                    }
-                }
-            }
         }
         .titleLink {
             display: flex;
             justify-content: space-between;
             align-items: center;
 
-            a {
-                text-decoration: none;
-                color: #7021de;
-                font-size: 1.1rem;
+            div {
+                display: flex;
+                gap: 5px;
+
+                .webLink, .gitLink {
+                    display: block;
+                    height: 2rem;
+                    width: 2rem;
+                }
+                .webLink { 
+                    background: url(../../assets/web-disabled.svg) no-repeat center / 2rem;
+
+                    &.active { 
+                        cursor: pointer;
+                        background: url(../../assets/web.svg) no-repeat center / 2rem;
+                    }
+                }
+                .gitLink {
+                    background: url(../../assets/git-disabled.svg) no-repeat center / 2rem;
+
+                    &.active { 
+                        cursor: pointer;
+                        background: url(../../assets/git.svg) no-repeat center / 2rem;
+                    }
+                }
             }
         }
     }

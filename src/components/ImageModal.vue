@@ -2,14 +2,21 @@
     <section :class="{ 'fadeIn': modalAnimate }">
         <div id="modalClickOut" @click="$emit('hideModal')"></div> 
 
-        <div id="sliderContainer">
-            <button id="popupClose" @click="$emit('hideModal')">&#10006;</button>
-            
+        <div id="modalInner">
+            <div class="closeContainer">
+                <button @click="$emit('hideModal')">&#10006;</button>
+            </div>
+
             <Splide :options="{ rewind: true, start: modalPage }" aria-label="Project Images" id="slider">
                 <SplideSlide v-for="index in 3" :key="index">
                     <img :src="require(`@/assets/site-captures/${fileName}-${index}.png`)" alt="Project Image">
                 </SplideSlide>
             </Splide>
+
+            <div class="screenBtns">
+                <button :class="{'active': !showMobile}" @click="showMobile = false">Desktop</button>
+                <button v-if="!disableMobile" :class="{'active': showMobile}" @click="showMobile = true">Mobile</button>
+            </div>
         </div>
     </section>
 </template>
@@ -19,11 +26,13 @@
 
     export default {
         props: { 
-            modalProject: String,
-            modalPage:    Number,
-            modalAnimate: Boolean,
-            showMobile:   Boolean,
+            modalProject:  String,
+            modalPage:     Number,
+            modalAnimate:  Boolean,
+            disableMobile: Boolean,
+            showMobile:    Boolean,
         },
+        emits: ['update:showMobile', 'hideModal'],
         computed: {
             fileName: function() { return (this.showMobile) ? `mobile-${this.modalProject}` : this.modalProject }
         }
@@ -55,21 +64,25 @@
         height: 100%;
         width: 100%;
     }
-    #sliderContainer {
+    #modalInner {
         position: fixed;
         top: 50%;
         left: 50%;
-        height: auto;
-        min-height: 50vh;
-        width: 90vw;
-        background: #333;
-        border: 1px solid #999;
         transform: translate(-50%, -50%);
     }
-
+    #slider { 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: auto;
+        width: 90vw;
+        padding: 2rem 0;
+        background: #333;
+        border: 1px solid #999;
+    }
     #slider img {
         display: block;
-        margin: 3rem auto;
+        margin: 0 auto;
         height: auto;
         width: auto;
         max-height: calc(90vh - 8rem);
@@ -78,31 +91,39 @@
         box-shadow: 5px 5px 10px #1a1a1a;
         cursor: grab;
     }
-    #popupClose {
-        position: absolute;
-        top: .5rem;
-        right: .5rem;
-        height: 2rem;
-        width: 2rem;
-        border: none;
-        border-radius: 3px;
-        font-size: 1rem;
-        font-weight: bold;
-        background: red;
-        color: white;
-        cursor: pointer;
-        z-index: 20;
-        transition: font-size .2s;
 
-        &:hover { font-size: 1.3rem }
+    .closeContainer {
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 5px 0;
+        gap: 5px;
+
+        button { 
+            height: 2rem;
+            width: 2rem;
+            color: #fff;
+            background: #ff3300;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+
+            transition: all .3s;
+
+            &:hover {
+                font-size: 1.3rem;
+                font-weight: bold;
+                text-shadow: 1px 1px 3px #1a1a1a;
+            }
+        }
     }
 
-    @media only screen and (max-width: 600px) {
-        #slider img { margin: 2.2rem auto }
-        #popupClose { 
-            top: -.5rem;
-            right: -.5rem;
-            border-radius: .5rem;
+    @media only screen and (max-width: 900px) {
+        .closeContainer {
+
+            button {
+                height: 2.5rem;
+                width: 2.5rem;
+            }
         }
     }
 </style>

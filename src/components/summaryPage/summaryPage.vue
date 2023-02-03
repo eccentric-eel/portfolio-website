@@ -176,7 +176,7 @@
             position: absolute;
             visibility: hidden;
             opacity: 0;
-            bottom: -2.2rem;
+            bottom: -2rem;
             left: 0;
             padding: 5px 15px;
             border-radius: 5px;
